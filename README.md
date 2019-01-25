@@ -4,9 +4,9 @@ npm t
 ```
 
 ```
- 9.2M Jan 24 18:30 fixture.bin
-  12M Jan 24 18:30 fixture.json
- 1.3M Jan 24 18:49 fixture-compressed.json.gz
+ 9.2M fixture.bin
+  12M fixture.json
+ 1.3M fixture-compressed.json.gz
 ```
 
 ```
