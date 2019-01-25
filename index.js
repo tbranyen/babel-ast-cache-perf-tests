@@ -3,6 +3,7 @@ const { log } = console;
 // Silence Babel output.
 Object.keys(console).forEach(key => console[key] = () => {});
 
+const { gunzipSync } = require('zlib');
 const { serialize, deserialize } = require('v8');
 const { join } = require('path');
 const { equal } = require('assert');
@@ -17,6 +18,11 @@ const encoding = 'utf8';
 const sourceCode = readFileSync(require.resolve(testModule), { encoding });
 const path = join(__dirname, 'fixture.json');
 const bin = join(__dirname, 'fixture.bin');
+const zip = join(__dirname, 'fixture-compressed.json.gz');
+
+// I didn't notice a significant difference between sync and async methods, so
+// while real-world usage will be async `readFile`, the tests will use
+// `readFileSync` instead.
 
 //*
 new Suite()
@@ -49,6 +55,12 @@ new Suite()
   })
   .add('readFileSync + Function eval', () => {
     const contents = readFileSync(path);
+    const ast = Function(`return ${contents}`)();
+
+    equal(ast.type, 'File');
+  })
+  .add('readFileSync + gunzipSync + Function eval', () => {
+    const contents = gunzipSync(readFileSync(zip));
     const ast = Function(`return ${contents}`)();
 
     equal(ast.type, 'File');
