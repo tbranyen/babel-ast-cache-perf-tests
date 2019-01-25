@@ -4,6 +4,12 @@ npm t
 ```
 
 ```
+ 9.2M Jan 24 18:30 fixture.bin
+  12M Jan 24 18:30 fixture.json
+ 1.3M Jan 24 18:49 fixture-compressed.json.gz
+```
+
+```
 - Runtime generation using source string and Babel transform
 - Using the Node `require()` function to read and parse fixture JSON
 - Read in the fixture using Node's `fs` module and parse to object using `JSON.parse`
