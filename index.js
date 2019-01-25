@@ -3,6 +3,7 @@ const { log } = console;
 // Silence Babel output.
 Object.keys(console).forEach(key => console[key] = () => {});
 
+const { serialize, deserialize } = require('v8');
 const { join } = require('path');
 const { equal } = require('assert');
 const { readFile, readFileSync } = require('fs');
@@ -15,6 +16,7 @@ const testModule = 'react-dom/cjs/react-dom.development'
 const encoding = 'utf8';
 const sourceCode = readFileSync(require.resolve(testModule), { encoding });
 const path = join(__dirname, 'fixture.json');
+const bin = join(__dirname, 'fixture.bin');
 
 //*
 new Suite()
@@ -48,6 +50,12 @@ new Suite()
   .add('readFileSync + Function eval', () => {
     const contents = readFileSync(path);
     const ast = Function(`return ${contents}`)();
+
+    equal(ast.type, 'File');
+  })
+  .add('readFileSync binary file + v8 deserialize', () => {
+    const contents = readFileSync(bin);
+    const ast = deserialize(contents);
 
     equal(ast.type, 'File');
   })
