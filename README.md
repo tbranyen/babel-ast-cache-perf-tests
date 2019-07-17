@@ -23,12 +23,12 @@ npm t
 > babel-ast-cache-perf@1.0.0 test /home/tbranyen/git/babel-ast-cache-perf
 > node index.js
 
-runtime generation x 2.46 ops/sec ±8.53% (11 runs sampled)
-require() JSON file x 3.18 ops/sec ±11.26% (12 runs sampled)
-readFileSync + JSON.parse x 2.60 ops/sec ±25.62% (12 runs sampled)
-readFileSync + eval x 3.95 ops/sec ±25.98% (17 runs sampled)
-readFileSync + Function eval x 5.59 ops/sec ±45.63% (20 runs sampled)
-readFileSync + gunzipSync + Function eval x 5.43 ops/sec ±41.08% (16 runs sampled)
-readFileSync binary file + v8 deserialize x 4.75 ops/sec ±28.81% (17 runs sampled)
-Fastest is readFileSync + gunzipSync + Function eval,readFileSync + Function eval
+runtime generation x 2.12 ops/sec ±10.30% (10 runs sampled)
+require() JSON file x 3.32 ops/sec ±9.63% (12 runs sampled)
+readFileSync + JSON.parse x 2.75 ops/sec ±29.12% (11 runs sampled)
+readFileSync + eval x 1.31 ops/sec ±21.94% (8 runs sampled)
+readFileSync + Function eval x 1.42 ops/sec ±14.20% (8 runs sampled)
+readFileSync + gunzipSync + Function eval x 1.17 ops/sec ±20.30% (7 runs sampled)
+readFileSync binary file + v8 deserialize x 5.54 ops/sec ±31.44% (17 runs sampled)
+Fastest is readFileSync binary file + v8 deserialize
 ```
