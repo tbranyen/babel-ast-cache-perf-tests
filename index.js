@@ -18,6 +18,7 @@ const encoding = 'utf8';
 const sourceCode = readFileSync(require.resolve(testModule), { encoding });
 const path = join(__dirname, 'fixture.json');
 const bin = join(__dirname, 'fixture.bin');
+const binzip = join(__dirname, 'fixture.bin.gz');
 const zip = join(__dirname, 'fixture-compressed.json.gz');
 
 const randomJunk = [];
@@ -90,6 +91,14 @@ new Suite()
   })
   .add('readFileSync binary file + v8 deserialize', () => {
     const contents = readFileSync(bin);
+    const ast = deserialize(contents);
+
+    i++;
+
+    equal(ast.type, 'File');
+  })
+  .add('readFileSync binary file + gunzipSync + v8 deserialize', () => {
+    const contents = gunzipSync(readFileSync(binzip));
     const ast = deserialize(contents);
 
     i++;
