@@ -20,6 +20,17 @@ const path = join(__dirname, 'fixture.json');
 const bin = join(__dirname, 'fixture.bin');
 const zip = join(__dirname, 'fixture-compressed.json.gz');
 
+const randomJunk = [];
+const count = 10000;
+
+// Create a bunch of random junk to append per run to ensure that tests do not
+// get cached.
+for (let i = 0; i < count; i++) {
+  randomJunk.push((Math.random() * 255).toString(16).split('.')[1]);
+}
+
+let i = 0;
+
 // I didn't notice a significant difference between sync and async methods, so
 // while real-world usage will be async `readFile`, the tests will use
 // `readFileSync` instead.
@@ -33,10 +44,14 @@ new Suite()
       ast: true,
     });
 
+    i++;
+
     equal(ast.type, 'File');
   })
   .add('require() JSON file', () => {
     const ast = require(path);
+
+    i++;
 
     equal(ast.type, 'File');
     delete require.cache[path];
@@ -45,29 +60,39 @@ new Suite()
     const contents = readFileSync(path);
     const ast = JSON.parse(contents);
 
+    i++;
+
     equal(ast.type, 'File');
   })
   .add('readFileSync + eval', () => {
     const contents = readFileSync(path);
-    const ast = eval(`(${contents})`);
+    const ast = eval(`(${contents})/*${randomJunk[i % count]}*/`);
+
+    i++;
 
     equal(ast.type, 'File');
   })
   .add('readFileSync + Function eval', () => {
     const contents = readFileSync(path);
-    const ast = Function(`return ${contents}`)();
+    const ast = Function(`return ${contents}/*${randomJunk[i % count]}*/`)();
+
+    i++;
 
     equal(ast.type, 'File');
   })
   .add('readFileSync + gunzipSync + Function eval', () => {
     const contents = gunzipSync(readFileSync(zip));
-    const ast = Function(`return ${contents}`)();
+    const ast = Function(`return ${contents}/*${randomJunk[i % count]}*/`)();
+
+    i++;
 
     equal(ast.type, 'File');
   })
   .add('readFileSync binary file + v8 deserialize', () => {
     const contents = readFileSync(bin);
     const ast = deserialize(contents);
+
+    i++;
 
     equal(ast.type, 'File');
   })
